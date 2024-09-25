@@ -41,7 +41,7 @@ class ToneSandhi:
         self.punc = "：，；。？！「」『』、"
 
         # 載入台灣常用詞字典
-        jieba.load_userdict("path_to_taiwan_words.txt")  # 請確保此檔案存在
+        jieba.load_userdict("taiwan_dict.txt")  # 請確保此檔案存在
 
     def _neural_sandhi(self, word: str, pos: str, finals: List[str]) -> List[str]:
         for j, item in enumerate(word):
