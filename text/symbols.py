@@ -1,9 +1,9 @@
-punctuation = ["!", "?", "…", ",", ".", "'", "-"]
+punctuation = ["!", "?", "…", ",", "。", "、", "「", "」", "'", "-"]
 pu_symbols = punctuation + ["SP", "UNK"]
 pad = "_"
 
-# chinese
-zh_symbols = [
+# 台灣中文（擴展自原中文符號集）
+zh_tw_symbols = [
     "E",
     "En",
     "a",
@@ -69,10 +69,13 @@ zh_symbols = [
     "AA",
     "EE",
     "OO",
+    # 可能的台灣特有音素，需要根據實際需求添加
+    "er0",  # 去掉捲舌音的 "er"
+    "tsi",  # 台語音 "chi"
+    "si0",  # 台語音 "si"
 ]
-num_zh_tones = 6
 
-# japanese
+# 保留原有的日文和英文符號
 ja_symbols = [
     "N",
     "a",
@@ -117,9 +120,7 @@ ja_symbols = [
     "z",
     "zy",
 ]
-num_ja_tones = 2
 
-# English
 en_symbols = [
     "aa",
     "ae",
@@ -161,27 +162,31 @@ en_symbols = [
     "z",
     "zh",
 ]
+
+# 調整聲調數量
+num_zh_tw_tones = 5  # 包括輕聲
+num_ja_tones = 2
 num_en_tones = 4
 
-# combine all symbols
-normal_symbols = sorted(set(zh_symbols + ja_symbols + en_symbols))
+# 合併所有符號
+normal_symbols = sorted(set(zh_tw_symbols + ja_symbols + en_symbols))
 symbols = [pad] + normal_symbols + pu_symbols
 sil_phonemes_ids = [symbols.index(i) for i in pu_symbols]
 
-# combine all tones
-num_tones = num_zh_tones + num_ja_tones + num_en_tones
+# 合併所有聲調
+num_tones = num_zh_tw_tones + num_ja_tones + num_en_tones
 
-# language maps
-language_id_map = {"ZH": 0, "JP": 1, "EN": 2}
+# 語言映射
+language_id_map = {"ZH-TW": 0, "JP": 1, "EN": 2}
 num_languages = len(language_id_map.keys())
-
 language_tone_start_map = {
-    "ZH": 0,
-    "JP": num_zh_tones,
-    "EN": num_zh_tones + num_ja_tones,
+    "ZH-TW": 0,
+    "JP": num_zh_tw_tones,
+    "EN": num_zh_tw_tones + num_ja_tones,
 }
 
 if __name__ == "__main__":
-    a = set(zh_symbols)
+    a = set(zh_tw_symbols)
     b = set(en_symbols)
-    print(sorted(a & b))
+    print("共同音素：", sorted(a & b))
+    print("台灣中文特有音素：", sorted(a - b))
